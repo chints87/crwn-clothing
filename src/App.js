@@ -47,7 +47,7 @@ class App extends React.Component{
          
         setCurrentUser(userAuth, () => console.log(this.state.currentUser));
         // Since firestore is giving ids and routename, we will remove from our array
-        addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({title,items})))
+        addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({title,items})));
       } else {
         setCurrentUser(userAuth, () => console.log(this.state.currentUser))
       }
