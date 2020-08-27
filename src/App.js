@@ -10,10 +10,10 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import CheckoutPage from './pages/checkout/checkout.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, addCollectionsAndDocuments } from './firebase/firebase.utils';
 import { setCurrentUser} from './redux/user/user-actions';
 import { selectCurrentUser} from './redux/user/user-selector';
-
+import { selectCollectionsForPreview } from './redux/shop/shop.selector';
 // const ShopPage = () => {
 //   return (
 //     <h2>SHOP PAGE</h2>
@@ -32,7 +32,7 @@ class App extends React.Component{
   unsubscribeFromAuth = null;
 
   componentDidMount(){
-    const {setCurrentUser} = this.props;
+    const {setCurrentUser, collectionsArray} = this.props;
     console.log('Mount')
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       if (userAuth) {
@@ -46,6 +46,8 @@ class App extends React.Component{
            }, () => console.log(this.state.currentUser))
          
         setCurrentUser(userAuth, () => console.log(this.state.currentUser));
+        // Since firestore is giving ids and routename, we will remove from our array
+        addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({title,items})))
       } else {
         setCurrentUser(userAuth, () => console.log(this.state.currentUser))
       }
@@ -81,7 +83,8 @@ class App extends React.Component{
 }
 
 const mapStateToProps = createStructuredSelector ({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch => ({
