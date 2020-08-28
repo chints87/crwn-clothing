@@ -74,6 +74,28 @@ export const addCollectionsAndDocuments = async (CollectionKey, objectsToAdd) =>
   return await batch.commit();
 }
 
+export const convertCollectionSnapshotToMap = (collections) => {
+  // Will give access to the object array
+  const transformedCollection = collections.docs.map(doc => 
+    { const { title, items } = doc.data()
+     
+    return{
+      // will give back a string and convert to a version that URL can read
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    }
+
+    })
+    // getting the object to map to look like the initial SHOP_DATA
+    return transformedCollection.reduce((accumulator, collection) => {
+      accumulator[collection.title.toLowerCase()] = collection;
+      return accumulator;
+    }, {});
+    
+}
+
 // // 
 // import firebase from 'firebase/app';
 // import from 'firebase/auth';
