@@ -5,7 +5,7 @@
   "dependencies": {
     "cra-template": "1.0.3",
     "firebase": "^7.17.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "package": "^1.0.1",
     "peerdeps": "^1.0.0",
     "persist": "^0.2.7",
